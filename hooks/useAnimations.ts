@@ -1,62 +1,30 @@
+'use client';
+
 import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
 
-export const useGsapAnimation = () => {
-  const context = useRef<gsap.Context | null>(null);
+export const useAnimations = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    return () => {
-      if (context.current) {
-        context.current.revert();
-      }
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const { clientX, clientY } = e;
+      const { left, top, width, height } = container.getBoundingClientRect();
+
+      const x = (clientX - left - width / 2) / width;
+      const y = (clientY - top - height / 2) / height;
+
+      container.style.setProperty('--mouse-x', x.toString());
+      container.style.setProperty('--mouse-y', y.toString());
     };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  return context;
-};
-
-export const useScrollTrigger = () => {
-  const elementRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!elementRef.current) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('animate-in');
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    observer.observe(elementRef.current);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-
-  return elementRef;
-};
-
-export const useParallax = (speed: number = 0.5) => {
-  const elementRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!elementRef.current) return;
-
-    const handleScroll = () => {
-      if (!elementRef.current) return;
-      const scrollY = window.scrollY;
-      elementRef.current.style.transform = `translateY(${scrollY * speed}px)`;
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [speed]);
-
-  return elementRef;
+  return containerRef;
 };
 
 export const useMouse = () => {
@@ -72,4 +40,49 @@ export const useMouse = () => {
   }, []);
 
   return mouseRef;
+};
+
+export const useParallax = (offset: number = 0.5) => {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const elementOffset = element.offsetTop;
+      const distance = scrollY - elementOffset;
+
+      element.style.transform = `translateY(${distance * offset}px)`;
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [offset]);
+
+  return ref;
+};
+
+export const useScrollDirection = () => {
+  const [direction, setDirection] = useRef('down').current;
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const newDirection = scrollY > lastScrollY.current ? 'down' : 'up';
+
+      if (newDirection !== direction) {
+        setDirection(newDirection);
+      }
+
+      lastScrollY.current = scrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [direction, setDirection]);
+
+  return direction;
 };

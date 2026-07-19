@@ -5,17 +5,16 @@ import { useEffect, useRef } from 'react';
 interface Particle {
   x: number;
   y: number;
+  size: number;
+  opacity: number;
   vx: number;
   vy: number;
-  life: number;
-  maxLife: number;
-  size: number;
 }
 
 export default function ParticleBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particlesRef = useRef<Particle[]>([]);
-  const animationRef = useRef<number>();
+  const animationIdRef = useRef<number>();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -24,68 +23,62 @@ export default function ParticleBackground() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    // Set canvas size
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
 
+    // Initialize particles
     const createParticles = () => {
-      const particles: Particle[] = [];
+      particlesRef.current = [];
       for (let i = 0; i < 50; i++) {
-        particles.push({
+        particlesRef.current.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 2,
-          vy: (Math.random() - 0.5) * 2 - 1,
-          life: Math.random() * 100,
-          maxLife: 100 + Math.random() * 100,
           size: Math.random() * 2 + 0.5,
+          opacity: Math.random() * 0.5 + 0.1,
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.5,
         });
       }
-      return particles;
     };
+    createParticles();
 
-    particlesRef.current = createParticles();
-
+    // Animation loop
     const animate = () => {
       ctx.fillStyle = 'rgba(9, 9, 9, 0.1)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.fillStyle = 'rgba(245, 230, 200, 0.6)';
-
       particlesRef.current.forEach((particle) => {
-        particle.life++;
+        // Update position
         particle.x += particle.vx;
         particle.y += particle.vy;
-        particle.vy += 0.05;
 
-        const opacity = 1 - particle.life / particle.maxLife;
-        ctx.globalAlpha = opacity * 0.6;
-        ctx.fillRect(particle.x, particle.y, particle.size, particle.size);
+        // Wrap around screen
+        if (particle.x < 0) particle.x = canvas.width;
+        if (particle.x > canvas.width) particle.x = 0;
+        if (particle.y < 0) particle.y = canvas.height;
+        if (particle.y > canvas.height) particle.y = 0;
 
-        if (particle.life > particle.maxLife) {
-          particle.life = 0;
-          particle.x = Math.random() * canvas.width;
-          particle.y = Math.random() * canvas.height;
-          particle.vy = (Math.random() - 0.5) * 2 - 1;
-        }
+        // Draw particle
+        ctx.fillStyle = `rgba(245, 230, 200, ${particle.opacity})`;
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+        ctx.fill();
       });
 
-      ctx.globalAlpha = 1;
-      animationRef.current = requestAnimationFrame(animate);
+      animationIdRef.current = requestAnimationFrame(animate);
     };
 
-    animationRef.current = requestAnimationFrame(animate);
-
-    const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-
-    window.addEventListener('resize', handleResize);
+    animate();
 
     return () => {
-      window.removeEventListener('resize', handleResize);
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
+      window.removeEventListener('resize', resizeCanvas);
+      if (animationIdRef.current) {
+        cancelAnimationFrame(animationIdRef.current);
       }
     };
   }, []);
@@ -93,8 +86,8 @@ export default function ParticleBackground() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-0"
-      style={{ background: '#090909' }}
+      className="fixed inset-0 pointer-events-none opacity-30"
+      style={{ background: 'transparent' }}
     />
   );
 }
