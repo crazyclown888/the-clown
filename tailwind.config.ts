@@ -4,7 +4,7 @@ const config: Config = {
   content: [
     './app/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './styles/**/*.{js,ts,jsx,tsx,mdx}',
+    './hooks/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
@@ -14,43 +14,46 @@ const config: Config = {
         'accent-red': '#C61F1F',
         'dark-red': '#8A0E0E',
         gold: '#C9A227',
-        white: '#F5F5F5',
       },
       fontFamily: {
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+        mono: ['Menlo', 'monospace'],
       },
       fontSize: {
-        'hero': ['clamp(3rem, 10vw, 8rem)', { lineHeight: '1.1' }],
-        'section': ['clamp(2rem, 8vw, 5rem)', { lineHeight: '1.2' }],
-      },
-      spacing: {
-        'safe': 'max(1rem, env(safe-area-inset-bottom))',
-      },
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        hero: ['clamp(2rem, 10vw, 12rem)', { lineHeight: '1' }],
+        'display-lg': ['clamp(2rem, 6vw, 4rem)', { lineHeight: '1.1' }],
+        'display-md': ['clamp(1.5rem, 4vw, 3rem)', { lineHeight: '1.2' }],
       },
       animation: {
-        'float': 'float 6s ease-in-out infinite',
-        'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
-        'breathe': 'breathe 4s ease-in-out infinite',
+        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        float: 'float 3s ease-in-out infinite',
+        'glow-pulse': 'glow-pulse 2s ease-in-out infinite',
       },
       keyframes: {
         float: {
           '0%, 100%': { transform: 'translateY(0px)' },
           '50%': { transform: 'translateY(-20px)' },
         },
-        'pulse-glow': {
-          '0%, 100%': { opacity: '1' },
-          '50%': { opacity: '0.5' },
+        'glow-pulse': {
+          '0%, 100%': { boxShadow: '0 0 20px rgba(197, 31, 31, 0.5)' },
+          '50%': { boxShadow: '0 0 40px rgba(197, 31, 31, 0.8)' },
         },
-        breathe: {
-          '0%, 100%': { transform: 'scale(1)' },
-          '50%': { transform: 'scale(1.05)' },
-        },
+      },
+      backdropFilter: {
+        'blur-xl': 'blur(24px)',
+      },
+      spacing: {
+        'safe-top': 'max(1rem, env(safe-area-inset-top))',
+        'safe-right': 'max(1rem, env(safe-area-inset-right))',
+        'safe-bottom': 'max(1rem, env(safe-area-inset-bottom))',
+        'safe-left': 'max(1rem, env(safe-area-inset-left))',
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+    require('@tailwindcss/forms'),
+  ],
 };
 
 export default config;
