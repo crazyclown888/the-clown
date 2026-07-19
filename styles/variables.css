@@ -1,15 +1,26 @@
 :root {
-  --font-sans: 'Inter', system-ui, sans-serif;
   --color-dark: #090909;
   --color-primary: #F5E6C8;
   --color-accent-red: #C61F1F;
   --color-dark-red: #8A0E0E;
   --color-gold: #C9A227;
   --color-white: #F5F5F5;
+
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+  --shadow-glow: 0 0 30px rgba(198, 31, 31, 0.5);
 }
 
-@supports (font-variation-settings: normal) {
-  :root {
-    --font-sans: 'Inter Variable', system-ui, sans-serif;
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

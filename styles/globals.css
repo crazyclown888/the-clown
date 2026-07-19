@@ -1,87 +1,128 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
+@import 'variables.css';
+@import 'effects.css';
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
-@layer base {
-  * {
-    @apply m-0 p-0 box-border;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 100px;
+}
+
+body {
+  background: #090909;
+  color: #f5f5f5;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+code {
+  font-family: 'Space Mono', monospace;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font: inherit;
+}
+
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+img,
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Animation classes */
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
   }
-
-  html {
-    scroll-behavior: smooth;
-  }
-
-  body {
-    @apply bg-dark text-white overflow-x-hidden;
-    font-family: 'Inter', system-ui, sans-serif;
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-bold;
-    font-family: 'Inter', system-ui, sans-serif;
-    font-weight: 900;
-    letter-spacing: -0.02em;
+  to {
+    opacity: 1;
   }
 }
 
-@layer components {
-  .container-custom {
-    @apply w-full max-w-7xl mx-auto px-4 md:px-8 lg:px-12;
-  }
+.animate-slide-up {
+  animation: slideUp 0.6s ease-out;
+}
 
-  .gradient-text {
-    @apply bg-gradient-to-r from-primary via-gold to-primary bg-clip-text text-transparent;
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
   }
-
-  .glass-effect {
-    @apply backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl;
-  }
-
-  .glow-effect {
-    @apply shadow-2xl shadow-accent-red/50;
-  }
-
-  .text-shadow {
-    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
-  }
-
-  .button-primary {
-    @apply px-8 py-3 bg-primary text-dark font-bold rounded-full hover:shadow-xl transition-all duration-300 hover:scale-105 uppercase tracking-wider text-sm md:text-base;
-  }
-
-  .button-secondary {
-    @apply px-8 py-3 border-2 border-primary text-primary font-bold rounded-full hover:bg-primary/10 transition-all duration-300 uppercase tracking-wider text-sm md:text-base;
-  }
-
-  .section-padding {
-    @apply py-24 md:py-40 lg:py-52;
-  }
-
-  .section-title {
-    @apply text-hero font-bold text-center mb-12 md:mb-20 text-primary;
-    text-shadow: 0 8px 32px rgba(197, 31, 31, 0.3);
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@layer utilities {
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
+/* Prose styling */
+.prose {
+  color: #f5f5f5;
+}
 
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  color: #F5E6C8;
+  font-weight: 700;
+}
 
-  .backdrop-blur-xl {
-    backdrop-filter: blur(24px);
-  }
+.prose a {
+  color: #C9A227;
+  text-decoration: underline;
+}
 
-  .blur-sm-custom {
-    filter: blur(2px);
-  }
+.prose a:hover {
+  color: #F5E6C8;
+}
 
-  .grain {
-    background-image:
-      url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' result='noise' /%3E%3C/filter%3E%3Crect width='400' height='400' fill='%23000' /%3E%3Crect width='400' height='400' fill='%23fff' filter='url(%23noiseFilter)' opacity='0.05' /%3E%3C/svg%3E");
-    background-size: 400px 400px;
-  }
+.prose code {
+  background: rgba(245, 230, 200, 0.1);
+  color: #C9A227;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.prose pre {
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(245, 230, 200, 0.1);
+  border-radius: 8px;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.prose blockquote {
+  border-left: 4px solid #C9A227;
+  padding-left: 1rem;
+  color: #f5f5f5;
 }
