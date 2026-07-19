@@ -1,0 +1,77 @@
+.floating-particle {
+  position: absolute;
+  pointer-events: none;
+}
+
+.dust-particle {
+  width: 2px;
+  height: 2px;
+  background-color: rgba(245, 230, 200, 0.3);
+  border-radius: 50%;
+  animation: float-particle 20s infinite;
+}
+
+@keyframes float-particle {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100vh) translateX(100px);
+    opacity: 0;
+  }
+}
+
+.spotlight {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(197, 31, 31, 0.3) 0%, rgba(197, 31, 31, 0) 70%);
+  filter: blur(40px);
+  animation: spotlight-move 8s ease-in-out infinite;
+}
+
+@keyframes spotlight-move {
+  0%, 100% {
+    transform: translateX(-50px) translateY(-50px);
+  }
+  50% {
+    transform: translateX(50px) translateY(50px);
+  }
+}
+
+.fog {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 1200 600%22><defs><filter id=%22fog%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.02%22 numOctaves=%223%22 result=%22noise%22/><feDisplacementMap in=%22SourceGraphic%22 in2=%22noise%22 scale=%22100%22/></filter></defs><rect width=%221200%22 height=%22600%22 fill=%22%23090909%22 filter=%22url(%23fog)%22/></svg>');
+  opacity: 0.4;
+  animation: fog-move 30s linear infinite;
+}
+
+@keyframes fog-move {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.grain-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' result='noise' /%3E%3C/filter%3E%3Crect width='400' height='400' fill='%23000' /%3E%3Crect width='400' height='400' fill='%23fff' filter='url(%23noiseFilter)' opacity='0.03' /%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.5;
+}

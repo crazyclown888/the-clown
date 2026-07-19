@@ -1,0 +1,15 @@
+:root {
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --color-dark: #090909;
+  --color-primary: #F5E6C8;
+  --color-accent-red: #C61F1F;
+  --color-dark-red: #8A0E0E;
+  --color-gold: #C9A227;
+  --color-white: #F5F5F5;
+}
+
+@supports (font-variation-settings: normal) {
+  :root {
+    --font-sans: 'Inter Variable', system-ui, sans-serif;
+  }
+}
